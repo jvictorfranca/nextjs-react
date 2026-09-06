@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import "./global.css"
 
 export const metadata = {
@@ -9,22 +10,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <header style={{padding: "10px", borderBottom: "1px solid #ccc"}}>
-          <nav>
-            <ul style={{display: "flex", gap: "10px", listStyle: "none"}}> 
-              <li> <Link href="/"> Home </Link> </li>
-              <li> <Link href="/about"> About </Link> </li>
-              <li> <Link href="/about/team"> Team </Link> </li>
-
-            </ul>
-          </nav>
-
-        </header>
-        <main style={{padding: "20px"}}>
+      <body className="min-h-screen flex flex-col">
+        <Navigation />
+        <main className="flex-grow p-6">
         {children}
-
         </main>
+        <Footer />
       </body>
     </html>
   );
