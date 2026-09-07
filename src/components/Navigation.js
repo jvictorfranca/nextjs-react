@@ -8,6 +8,7 @@ export default function Navigation () {
             <li> <Link href="/"> Home </Link> </li>
             <li> <Link href="/about"> About </Link> </li>
             <li> <Link href="/about/team"> Team </Link> </li>
+            <li> <Link href="/pokemons"> Pokemons </Link> </li>
             <li> <Link href="/contact"> Contact </Link> </li>
         </ul>
         </nav>
