@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import "./global.css"
 import ThemeProvider from "@/context/ThemeContext";
+import ToasterClient from "@/components/ToasterClient";
 
 export const metadata = {
   title: "NextJs App",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
           {children}
           </main>
           <Footer /> 
+          <ToasterClient />
         </ThemeProvider>
       </body>
     </html>
