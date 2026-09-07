@@ -1,3 +1,5 @@
+import PokemonList from "./PokemonsList";
+
 // This metadata is looked by NextJS to populate broser metadata on head of HTML elements
 export const metadata = {
     title: "Pokemons page",
@@ -25,15 +27,7 @@ export default async function PokemonsPage() {
 
     return (
         <div>
-            <section className="mx-auto p-8">
-            <h1 className="text-2xl font-semibold mb-6">Pokemons</h1>
-            <ul className="space-y-4">
-                {pokemons.map(pokemon => (
-                    <li key={pokemon.url} >{pokemon.name}</li>
-                ))}
-            </ul>
-
-            </section>
+            <PokemonList pokemons={pokemons} />
         </div>
     )
 }
