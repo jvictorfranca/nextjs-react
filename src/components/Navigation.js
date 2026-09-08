@@ -16,6 +16,7 @@ export default function Navigation () {
             <li> <Link href="/about/team"> Team </Link> </li>
             <li> <Link href="/pokemons"> Pokemons </Link> </li>
             <li> <Link href="/contact"> Contact </Link> </li>
+            <li> <Link href="/messages"> Messages </Link> </li>
             <li> <Link href="/checkout"> Checkout </Link> </li>
         </ul>
         {/* Theme toggle */}

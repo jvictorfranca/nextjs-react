@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "text": "Hello! Welcome 👋"
+  },
+  {
+    "id": 2,
+    "text": "Next.js API Routes are awesome 🚀"
+  },
+  {
+    "id": 3,
+    "text": "This message came from the server 🖥️"
+  },
+  {
+    "id": 4,
+    "text": "JSON is simple and easy to work with 😎"
+  },
+  {
+    "id": 5,
+    "text": "Today is a great day to code 💻"
+  },
+  {
+    "id": 6,
+    "text": "Let's build something amazing together 🔥"
+  },
+  {
+    "id": 7,
+    "text": "APIs make communication between systems easier 🌐"
+  },
+  {
+    "id": 8,
+    "text": "Next.js makes development much more productive ⚡"
+  },
+  {
+    "id": 9,
+    "text": "This is the ninth message from our server 📡"
+  },
+  {
+    "id": 10,
+    "text": "Everything is working perfectly ✅"
+  },
+  {
+    "id": 11,
+    "text": "Time to test our API 🧪"
+  },
+  {
+    "id": 12,
+    "text": "The data arrived successfully 🎯"
+  },
+  {
+    "id": 13,
+    "text": "A good structure keeps the code organized 🧹"
+  },
+  {
+    "id": 14,
+    "text": "Web development is a lot of fun 🌎"
+  },
+  {
+    "id": 15,
+    "text": "We're almost at the end 🚀"
+  },
+  {
+    "id": 16,
+    "text": "Another message is being sent by the server 📤"
+  },
+  {
+    "id": 17,
+    "text": "Everything is ready for the next step 💡"
+  },
+  {
+    "id": 18,
+    "text": "Clean code is happy code 😄"
+  },
+  {
+    "id": 19,
+    "text": "Thanks for following along 🙌"
+  },
+  {
+    "id": 20,
+    "text": "End of the list. See you next time! 👋"
+  }
+]
