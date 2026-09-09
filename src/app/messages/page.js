@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function Messages() {
 
@@ -56,9 +57,32 @@ export default function Messages() {
 
     }
 
-
+// Fetch the messages
     useEffect(()=> {
         fetchMessages()
+    }, [])
+
+
+    // Create connecton to server-sent events (SSE) endpoint. Browser will keep connection open to receive updates.
+
+    useEffect(()=> {
+        const eventSource = new EventSource("/api/messages/stream")
+
+        eventSource.onmessage = (event) => {
+            const newMessage = JSON.parse(event.data)
+
+            if(newMessage.type === "connected") {
+
+                toast.success("Connected successfully!")
+
+            } else {
+                setMessages((prev) => [...prev, newMessage])
+            }
+        }
+
+
+        // Cleanup
+        return () => {eventSource.close()}
     }, [])
 
     return (
