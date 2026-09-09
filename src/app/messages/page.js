@@ -95,7 +95,9 @@ export default function Messages() {
                     key={message.id}
                     className="p-3 border rounded-md bg-gray-100 dark:bg-gray-800"
                     >
-                        {message.text}
+                        <p className="font-semibold"> {message.user_name  || "Anonymous"}</p>
+                        <p>{message.text}</p>
+                        <span className="text-xs text-gray-500"> {message.created_at}</span>
                     </li>
                 ))}
 

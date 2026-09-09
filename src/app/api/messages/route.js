@@ -28,10 +28,10 @@ export async function POST (request) {
         const {text} = await request.json()
 
         const userIds = db.prepare("SELECT id FROM users").all().map(u => u.id)
-        const firstUserId = userIds[0]
+        const randomUser = userIds[Math.floor(Math.random()*userIds.length)]
         
         const stmt = db.prepare("INSERT INTO messages (user_id, text) VALUES (?, ?)")
-        const result = stmt.run(firstUserId, text)
+        const result = stmt.run(randomUser, text)
 
         const messageWithId = db.prepare(`
                 SELECT m.id, m.text, m.created_at, u.name AS user_name
