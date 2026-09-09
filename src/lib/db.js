@@ -1,7 +1,7 @@
 import Database from "better-sqlite3"
 import path from "path"
 import fs from "fs"
-import seedMessages from "./seeders/messages"
+import seedMessages from "./seeders/messagesSeeder"
 
 const dbPath = path.join(process.cwd(), "src/data/messages.db")
 const db = new Database(dbPath)
