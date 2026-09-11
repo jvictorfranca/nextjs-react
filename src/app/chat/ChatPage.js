@@ -87,7 +87,7 @@ export default function Messages() {
 
     return (
         <div className="p-6 max-w-lg mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Messages</h1>
+            <h1 className="text-2xl font-bold mb-4">Chat</h1>
             <ul className="space-y-2 mb-6">
 
                 {messages.map((message) => (

@@ -1,77 +1,37 @@
-"use client"
+import ContactPage from "./ContactPage"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import z from "zod";
-import { sendContactMessage } from "./actions";
+export const metadata = {
+    title: "Contact us | Agora", // Appears as page title on the browser tab
+    description: "Get in touch with me, Send feedbackm ask questions or report issues.",
+    keywords: ["code", "programming", "learn to code", "development"], // Keywords for useful context
+    openGraph: { // Contains metadata for title, description, and images that linkedin and facebook uses to display previews
+        title: "CodePion Courses | Learn to Code",
+        description:
+            "Explore CodePion's programming courses and build practical coding skills through hands-on lessons designed to help you learn, create, and grow as a developer.",
+        url: "https://codepion.com/og-images/courses.jpg",
+        siteName: "CodePion",
+        type: "website",
+        locale: "en_US",
+        images: [
+            {
+            url: "https://codepion.com/og-images/courses.jpg",
+            width: 1200,
+            height: 854,
+            alt: "CodePion Courses",
+            },
+        ],
+        },
+    twitter: { // Metadata specific for twitter
+        card: "summary_large_image",
+        title: "CodePion Courses | Learn to Code",
+        description:
+            "Learn programming with CodePion through practical, hands-on courses designed to build real-world coding skills and help you become a confident developer.",
+        images: ["https://codepion.com/og-images/courses.png"],
+        },
 
-
-const contactSchema = z.object ({
-    name: z.string().min(2, {message: "Name must be at least 2 characters"}),
-    email: z.string().email({message: "Please enter a valid email adress"}),
-    message: z.string().min(5, {message: "Message must be at least 5 characters"})
-})
-
-export default function Contact() {
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: {errors, isSubmitting}
-  }  = useForm({
-    resolver: zodResolver(contactSchema)
-  })
-
-  const onSubmit = async (data) => {
-    try{
-
-      const formData = new FormData()
-      formData.append('name', data.name)
-      formData.append('email', data.email)
-      formData.append('message', data.message)
-    
-      const result = await sendContactMessage(formData)
-
-      if(result.success) {
-        toast.success("Message sent successfully!")
-        reset()
-      } else {
-        toast.error(result.message || "Failed to send message. Please try again")
-      }
+}
 
 
-    } catch(e) {
-
-    }
-  }
-
-
-  return (
-    <div>
-      <h1>Contact Us</h1>
-      <p>
-        Have questions? Reach out to us at{" "}
-        <a href="mailto:jvictorfranca@yahoo.com.br">jvictorfranca@yahoo.com.br</a>
-      </p>
-      <form className="space-y-4"  onSubmit={handleSubmit(onSubmit)}>
-        {/* Name input */}
-        <input type="text" placeholder="Your name" className="border px-3 py-2 w-full rounded-md dark:placeholder-white/70" {...register('name')}/>
-          {errors.name && (<p className="text-red-500 text-sm mt-1">{errors.name.message}</p>)}
-        
-        {/* Email input */}
-        <input type="email" placeholder="Your email" className="border px-3 py-2 w-full rounded-md dark:placeholder-white/70" {...register('email')}/>
-          {errors.email && (<p className="text-red-500 text-sm mt-1">{errors.email.message}</p>)}
-        
-        {/* Message input */}
-        <textarea placeholder="Your message" className="border px-3 py-2 w-full rounded-md dark:placeholder-white/70" rows="4" {...register('message')}/>
-          {errors.message && (<p className="text-red-500 text-sm mt-1">{errors.message.message}</p>)}
-
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition" disabled={isSubmitting}>
-            { isSubmitting ? "Sending..." : "Send"}
-        </button>
-      </form>
-    </div>
-  );
+export default function Page() {
+    return <ContactPage />
 }

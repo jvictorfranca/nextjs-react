@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "About Us | Agora",
+  description: `Learn more about Agora, our mission,
+and how we connect the community through posts and messages.`,
+};
+
 export default function AboutPage() {
     return (
         <div>
