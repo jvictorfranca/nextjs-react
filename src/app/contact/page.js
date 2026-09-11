@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
+import { sendContactMessage } from "./actions";
 
 
 const contactSchema = z.object ({
@@ -26,13 +27,12 @@ export default function Contact() {
   const onSubmit = async (data) => {
     try{
 
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify( {name: data.name, email: data.email, message: data.message } )
-      })
-
-      const result = await res.json()
+      const formData = new FormData()
+      formData.append('name', data.name)
+      formData.append('email', data.email)
+      formData.append('message', data.message)
+    
+      const result = await sendContactMessage(formData)
 
       if(result.success) {
         toast.success("Message sent successfully!")

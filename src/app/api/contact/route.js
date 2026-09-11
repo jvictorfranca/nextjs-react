@@ -46,3 +46,15 @@ export async function POST (req) {
 
     }
 }
+
+
+// ------------------------
+// Example to use route: 
+
+//  const res = await fetch("/api/contact", {
+//         method: "POST",
+//         headers: {"Content-Type": "application/json"},
+//         body: JSON.stringify( {name: data.name, email: data.email, message: data.message } )
+//       })
+
+//       const result = await res.json()
