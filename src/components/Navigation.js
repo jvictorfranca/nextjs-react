@@ -18,6 +18,7 @@ export default function Navigation () {
             <li> <Link href="/contact"> Contact </Link> </li>
             <li> <Link href="/chat"> Chat </Link> </li>
             <li> <Link href="/checkout"> Checkout </Link> </li>
+            <li> <Link href="/debug/db"> Debug DB </Link> </li>
         </ul>
         {/* Theme toggle */}
         <button onClick={()=> {toggleTheme()}} className="px-3 py-1 border border-gray-300 dark:border-slate-600 rounded-md text-sm bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-slate-600 transition cursor-pointer"
