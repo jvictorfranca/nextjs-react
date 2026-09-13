@@ -15,6 +15,7 @@ export default function Navigation () {
             <li> <Link href="/about"> About </Link> </li>
             <li> <Link href="/about/team"> Team </Link> </li>
             <li> <Link href="/pokemons"> Pokemons </Link> </li>
+            <li> <Link href="/courses"> Courses </Link> </li>
             <li> <Link href="/contact"> Contact </Link> </li>
             <li> <Link href="/chat"> Chat </Link> </li>
             <li> <Link href="/checkout"> Checkout </Link> </li>

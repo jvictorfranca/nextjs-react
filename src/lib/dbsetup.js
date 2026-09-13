@@ -2,6 +2,7 @@ import Database from "better-sqlite3"
 import path from "path"
 import seedUsers from "./seeders/usersSeeder";
 import seedMessages from "./seeders/messagesSeeder";
+import seedCourses from "./seeders/courseSeeder";
 
 const dbPath = path.join(process.cwd(), "src/data/app.db")
 
@@ -24,9 +25,28 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS courses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    subTitle TEXT,
+    description TEXT,
+    course_slug TEXT UNIQUE,
+    original_price TEXT,
+    courseRating TEXT,
+    numberOfStudents TEXT,
+    duration TEXT,
+    language TEXT,
+    big_image TEXT,
+    is_paid BOOLEAN DEFAULT 1,
+    isBestseller BOOLEAN DEFAULT 0,
+    thingsToLearn TEXT,
+    courseCurriculum TEXT
+);
 `);
 
 seedUsers(db)
 seedMessages(db)
+seedCourses(db)
 
 export default db;
