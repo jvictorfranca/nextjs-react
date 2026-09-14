@@ -1,7 +1,10 @@
 import fs from "fs"
 import path from "path"
+import { loadSQL } from "../utils"
 
 const filePath = path.join(process.cwd(), "src/data/courses.json")
+const insertCoursesSQL = loadSQL("seed/insertCourses.sql")
+
 
 export default function seedCourses(db) {
     const { count } = db
@@ -13,25 +16,7 @@ export default function seedCourses(db) {
             fs.readFileSync(filePath, "utf-8")
         )
 
-        const insert = db.prepare(`
-            INSERT INTO courses (
-                title,
-                subTitle,
-                description,
-                course_slug,
-                original_price,
-                courseRating,
-                numberOfStudents,
-                duration,
-                language,
-                big_image,
-                is_paid,
-                isBestseller,
-                thingsToLearn,
-                courseCurriculum
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `)
+        const insert = db.prepare(insertCoursesSQL)
 
         const insertMany = db.transaction((courses) => {
             for (const course of courses) {
