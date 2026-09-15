@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
 import { sendContactMessage } from "./actions";
+import FormError from "@/components/FormError";
+import SubmitButton from "@/components/SubmitButton";
+import { inputClass } from "@/lib/styles";
 
 
 const contactSchema = z.object ({
@@ -57,17 +60,19 @@ export default function Contact() {
       </p>
       <form className="space-y-4"  onSubmit={handleSubmit(onSubmit)}>
         {/* Name input */}
-        <input type="text" placeholder="Your name" className="border px-3 py-2 w-full rounded-md dark:placeholder-white/70" {...register('name')}/>
-          {errors.name && (<p className="text-red-500 text-sm mt-1">{errors.name.message}</p>)}
+        <input type="text" placeholder="Your name" className={inputClass} {...register('name')}/>
+          <FormError>{errors?.name.message}</FormError>
         
         {/* Email input */}
-        <input type="email" placeholder="Your email" className="border px-3 py-2 w-full rounded-md dark:placeholder-white/70" {...register('email')}/>
-          {errors.email && (<p className="text-red-500 text-sm mt-1">{errors.email.message}</p>)}
-        
+        <input type="email" placeholder="Your email" className={inputClass} {...register('email')}/>
+          <FormError>{errors?.email.message}</FormError>
         {/* Message input */}
-        <textarea placeholder="Your message" className="border px-3 py-2 w-full rounded-md dark:placeholder-white/70" rows="4" {...register('message')}/>
-          {errors.message && (<p className="text-red-500 text-sm mt-1">{errors.message.message}</p>)}
+        <textarea placeholder="Your message" className={inputClass} {...register('message')}/>
+          <FormError>{errors?.message.message}</FormError>
 
+        <SubmitButton>
+          Send
+        </SubmitButton>
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition" disabled={isSubmitting}>
             { isSubmitting ? "Sending..." : "Send"}
         </button>

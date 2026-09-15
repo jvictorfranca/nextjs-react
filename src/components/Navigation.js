@@ -74,7 +74,7 @@ export default function Navigation () {
         <div className="flex items-center gap-3">
 
             {
-                session ? 
+                !session ? 
                 <>
                     <Link href="/login" className={clsx(
                         "px-3 py-1 text-sm rounded-md",
