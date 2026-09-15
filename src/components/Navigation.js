@@ -82,7 +82,7 @@ export default function Navigation () {
                     )}>
                         Login
                     </Link>
-                    <Link href="/login" className={clsx(
+                    <Link href="/signup" className={clsx(
                         "px-3 py-1 text-sm rounded-md",
                         "bg-green-600 text-white hover:bg-green-700 cursor-pointer"
                     )}>
