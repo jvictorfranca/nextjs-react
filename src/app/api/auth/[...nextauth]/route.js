@@ -11,17 +11,17 @@ export const authOptions = {
         credentials: {
             email: {label: "Email", type: "email"},
             password: {label: "Password", type: "password"},
-            async authorize(credentials) {
-                const user = db.prepare("SELECT * FROM users WHERE email = ?").get(credentials.email)
+            
+            
+        },
+        async authorize(credentials) {
+            const user = db.prepare("SELECT * FROM users WHERE email = ?").get(credentials.email)
 
-                if (user && bcrypt.compareSync(credentials.password, user.password)) {
-                    return {id: user.id, name: user.name, email: user.email}
-                }
-
-                return null
+            if (user && bcrypt.compareSync(credentials.password, user.password)) {
+                return {id: user.id, name: user.name, email: user.email}
             }
 
-
+            return null
         }
     })],
     session: {
