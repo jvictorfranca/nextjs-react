@@ -1,9 +1,15 @@
 'use client'
 
+import { signIn, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 export default function Messages() {
+
+    // Check user session:
+
+    const {status} = useSession()
+
 
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState("")
@@ -84,6 +90,19 @@ export default function Messages() {
         // Cleanup
         return () => {eventSource.close()}
     }, [])
+
+    if(status === "loading") {
+        return <p p-6 text-center>Loading session...</p>
+    }
+
+    if(status === "unauthenticated") {
+        return (
+            <div className="p-6 text-center">
+                <p className="mb-4">You must be logged in to view messages</p>
+                <button onClick={()=>{signIn()}} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer">Login</button>
+            </div>
+        )
+    }
 
     return (
         <div className="p-6 max-w-lg mx-auto">
