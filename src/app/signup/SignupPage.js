@@ -4,13 +4,15 @@ import FormError from "@/components/FormError"
 import SubmitButton from "@/components/SubmitButton"
 import { inputClass } from "@/lib/styles"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "next-auth/react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import z from "zod"
 import { signupUser } from "./actions"
+import { signIn } from "next-auth/react"
+import { FcGoogle } from "react-icons/fc"
+import clsx from "clsx"
+
 
 
 const signupSchema = z.object({
@@ -104,6 +106,30 @@ export default function SignupPage () {
                 </SubmitButton>
 
             </form>
+
+            {/* Divider */}
+            <div className="flex items-center my-4">
+                <div className="flex-1 h-px bg-gray-300"></div>
+                <span className="px-2 text-gray-500 text-sm">or</span>
+                <div className="flex-1 h-px bg-gray-300"></div>
+            </div>
+            {/* Oauth sign ups */}
+            <div className="mt-6 flex flex-col gap-3">
+                <button 
+                    type="button"
+                    onClick={()=> signIn("google")}
+                    className={clsx(
+                        "w-full py-2 border rounded-md flex justify-center items-center gap-2",
+                        "transition shadow-sm font-medium cursor-pointer",
+                        "bg-white text-gray-700 hover:bg-gray-100",
+                        "dark:bg-gray-800 dark:text-gray-100 dark:hoverbg-gray-700"
+                    )}
+                    
+                    >
+                    <FcGoogle size={22}/>
+                    <span className="font-medium">Sign up with Google</span>
+                </button>
+            </div>
         </div>
     )
 

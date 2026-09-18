@@ -1,12 +1,14 @@
 import db from "@/lib/dbsetup";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
 import bcrypt from "bcrypt"
 
 
 export const authOptions = {
     
-    providers: [CredentialsProvider({
+    providers: [
+        CredentialsProvider({
         name: "Credentials",
         credentials: {
             email: {label: "Email", type: "email"},
@@ -23,12 +25,38 @@ export const authOptions = {
 
             return null
         }
-    })],
+    }),
+    GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    })
+
+],
     session: {
         strategy: "jwt"
     },
     callbacks: {
 
+        // Handle google login: Auto insert user into the DB.
+        async signIn({user, account}) {
+            try{
+                
+                if(account?.provider === "google") {
+                    const existing = db.prepare("SELECT * FROM users WHERE email = ?").get(user.email)
+
+                    if(!existing) {
+                        db.prepare("INSERT INTO users (name, email, email_verified) VALUES (?, ?, 1)").run(user.name, user.email)
+                    }
+                }
+                return true
+            } catch (e) {
+                console.error("Sign in error: ", e)
+                return false
+
+            }
+        },
+
+        // When JWT is created or updated
         async jwt({token, user}) {
             if (user) {
                 const dbUser = db.prepare("SELECT id FROM users WHERE email = ?").get(user.email)

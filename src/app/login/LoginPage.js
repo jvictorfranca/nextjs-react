@@ -4,11 +4,13 @@ import FormError from "@/components/FormError"
 import SubmitButton from "@/components/SubmitButton"
 import { inputClass } from "@/lib/styles"
 import { zodResolver } from "@hookform/resolvers/zod"
+import clsx from "clsx"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import { FcGoogle } from "react-icons/fc"
 import z from "zod"
 
 const loginSchema = z.object({
@@ -78,6 +80,24 @@ export default function LoginPage () {
                     </div>
 
                 </form>
+
+                {/* Oauth sign ups */}
+                <div className="mt-6 flex flex-col gap-3">
+                    <button 
+                        type="button"
+                        onClick={()=> signIn("google")}
+                        className={clsx(
+                            "w-full py-2 border rounded-md flex justify-center items-center gap-2",
+                            "transition shadow-sm font-medium cursor-pointer",
+                            "bg-white text-gray-700 hover:bg-gray-100",
+                            "dark:bg-gray-800 dark:text-gray-100 dark:hoverbg-gray-700"
+                        )}
+                        
+                        >
+                        <FcGoogle size={22}/>
+                        <span className="font-medium">Login with Google</span>
+                    </button>
+                </div>
 
                 <Link
                     href="/forgot-password"
