@@ -12,6 +12,7 @@ import { signupUser } from "./actions"
 import { signIn } from "next-auth/react"
 import { FcGoogle } from "react-icons/fc"
 import clsx from "clsx"
+import { FaGithub } from "react-icons/fa"
 
 
 
@@ -115,6 +116,8 @@ export default function SignupPage () {
             </div>
             {/* Oauth sign ups */}
             <div className="mt-6 flex flex-col gap-3">
+
+                {/* Google sign up */}
                 <button 
                     type="button"
                     onClick={()=> signIn("google")}
@@ -124,9 +127,23 @@ export default function SignupPage () {
                         "bg-white text-gray-700 hover:bg-gray-100",
                         "dark:bg-gray-800 dark:text-gray-100 dark:hoverbg-gray-700"
                     )}
-                    
-                    >
+                >
                     <FcGoogle size={22}/>
+                    <span className="font-medium">Sign up with Google</span>
+                </button>
+
+                {/* Github sign up */}
+                <button 
+                    type="button"
+                    onClick={()=> signIn("github")}
+                    className={clsx(
+                        "w-full py-2 border rounded-md flex justify-center items-center gap-2",
+                        "transition shadow-sm font-medium cursor-pointer",
+                        "bg-white text-gray-700 hover:bg-gray-100",
+                        "dark:bg-gray-800 dark:text-gray-100 dark:hoverbg-gray-700"
+                    )}
+                >
+                    <FaGithub size={22}/>
                     <span className="font-medium">Sign up with Google</span>
                 </button>
             </div>

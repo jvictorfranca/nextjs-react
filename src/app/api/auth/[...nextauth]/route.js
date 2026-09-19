@@ -2,6 +2,7 @@ import db from "@/lib/dbsetup";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
+import GithubProvider from "next-auth/providers/github"
 import bcrypt from "bcrypt"
 
 
@@ -29,6 +30,11 @@ export const authOptions = {
     GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    }),
+
+    GithubProvider({
+        clientId: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET
     })
 
 ],
@@ -41,7 +47,11 @@ export const authOptions = {
         async signIn({user, account}) {
             try{
                 
-                if(account?.provider === "google") {
+                if(
+                    account?.provider === "google"
+                    || account?.provider === "github"
+
+                ) {
                     const existing = db.prepare("SELECT * FROM users WHERE email = ?").get(user.email)
 
                     if(!existing) {
