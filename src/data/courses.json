@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "title": "React 19 Mastery - From Zero to Pro",
     "subTitle": "Learn React 19 from scratch with hands-on projects",
     "description": "Master the fundamentals of React 19, including hooks, context, and performance optimization.",
@@ -16,6 +17,7 @@
     "courseCurriculum": "Introduction, JSX & Components, Hooks, Context, Project: Task Tracker"
   },
   {
+    "id": 2,
     "title": "Next.js 15 Complete Guide",
     "subTitle": "Build modern full-stack applications with Next.js",
     "description": "Learn Next.js 15 with App Router, server components, authentication, APIs, and database integration.",
@@ -32,6 +34,7 @@
     "courseCurriculum": "Next.js Fundamentals, App Router, Server Components, Authentication, APIs, Full-Stack Project"
   },
   {
+    "id": 3,
     "title": "JavaScript Modern Mastery",
     "subTitle": "Master modern JavaScript from fundamentals to advanced concepts",
     "description": "A complete JavaScript course covering ES6+, asynchronous programming, DOM manipulation, and advanced patterns.",
@@ -48,6 +51,7 @@
     "courseCurriculum": "JavaScript Basics, ES6+, DOM, Async JavaScript, Modules, Advanced Patterns, Final Project"
   },
   {
+    "id": 4,
     "title": "TypeScript for Professional Developers",
     "subTitle": "Write scalable and maintainable applications with TypeScript",
     "description": "Learn TypeScript from the basics to advanced typing techniques used in real-world applications.",
@@ -64,6 +68,7 @@
     "courseCurriculum": "TypeScript Basics, Interfaces, Generics, Advanced Types, Utility Types, Real-World Project"
   },
   {
+    "id": 5,
     "title": "Node.js Backend Development",
     "subTitle": "Build powerful REST APIs and backend services with Node.js",
     "description": "Learn Node.js, Express, authentication, databases, testing, and production deployment.",
@@ -80,6 +85,7 @@
     "courseCurriculum": "Node.js Fundamentals, Express, REST APIs, Authentication, MongoDB, Testing, Deployment"
   },
   {
+    "id": 6,
     "title": "Python Programming Bootcamp",
     "subTitle": "Learn Python from beginner to advanced developer",
     "description": "Complete Python programming course covering syntax, OOP, APIs, automation, and real-world projects.",
@@ -96,6 +102,7 @@
     "courseCurriculum": "Python Basics, Functions, OOP, Data Structures, APIs, Automation, Final Projects"
   },
   {
+    "id": 7,
     "title": "Django Web Development",
     "subTitle": "Create production-ready web applications with Django",
     "description": "Learn Django by building complete web applications with authentication, databases, APIs, and deployment.",
@@ -112,6 +119,7 @@
     "courseCurriculum": "Django Basics, Models, Views, Templates, Authentication, Django REST Framework, Deployment"
   },
   {
+    "id": 8,
     "title": "SQL & Database Design",
     "subTitle": "Master SQL and learn how to design relational databases",
     "description": "Learn SQL, database modeling, joins, indexes, transactions, and optimization using practical projects.",
@@ -128,6 +136,7 @@
     "courseCurriculum": "SQL Fundamentals, CRUD, Joins, Relationships, Indexes, Transactions, Database Project"
   },
   {
+    "id": 9,
     "title": "MongoDB for Developers",
     "subTitle": "Build flexible applications with MongoDB and NoSQL",
     "description": "Learn MongoDB from fundamentals to advanced database architecture and performance optimization.",
@@ -144,6 +153,7 @@
     "courseCurriculum": "MongoDB Basics, CRUD, Aggregation, Indexes, Transactions, Atlas, Production Project"
   },
   {
+    "id": 10,
     "title": "Full Stack Web Development",
     "subTitle": "Become a full-stack developer by building real applications",
     "description": "Learn frontend and backend development using React, Node.js, databases, APIs, and modern tools.",
@@ -160,6 +170,7 @@
     "courseCurriculum": "HTML & CSS, JavaScript, React, Node.js, Databases, Authentication, Full-Stack Project"
   },
   {
+    "id": 11,
     "title": "Tailwind CSS From Scratch",
     "subTitle": "Build beautiful responsive interfaces with Tailwind CSS",
     "description": "Learn Tailwind CSS and create modern, responsive, accessible interfaces faster.",
@@ -176,6 +187,7 @@
     "courseCurriculum": "Tailwind Basics, Layouts, Responsive Design, Components, Dark Mode, Final UI Project"
   },
   {
+    "id": 12,
     "title": "Git & GitHub for Developers",
     "subTitle": "Master version control and professional Git workflows",
     "description": "Learn Git and GitHub including branching, merging, pull requests, collaboration, and CI workflows.",
@@ -192,6 +204,7 @@
     "courseCurriculum": "Git Basics, Branching, Merging, GitHub, Pull Requests, Collaboration, CI/CD"
   },
   {
+    "id": 13,
     "title": "Docker & Kubernetes Essentials",
     "subTitle": "Learn containers and modern application deployment",
     "description": "Understand Docker containers, images, networks, volumes, Kubernetes, and production deployments.",
@@ -208,6 +221,7 @@
     "courseCurriculum": "Docker Fundamentals, Images, Containers, Networking, Kubernetes, Deployments, Production Project"
   },
   {
+    "id": 14,
     "title": "AWS Cloud Practitioner",
     "subTitle": "Learn the fundamentals of cloud computing with AWS",
     "description": "Understand AWS core services, cloud architecture, security, pricing, and deployment strategies.",
@@ -224,6 +238,7 @@
     "courseCurriculum": "Cloud Fundamentals, EC2, S3, IAM, VPC, Databases, Security, AWS Project"
   },
   {
+    "id": 15,
     "title": "UI/UX Design Fundamentals",
     "subTitle": "Design intuitive and beautiful digital experiences",
     "description": "Learn UX research, wireframing, prototyping, visual design, and usability principles.",
@@ -240,6 +255,7 @@
     "courseCurriculum": "UX Fundamentals, Research, Wireframes, UI Design, Prototyping, Usability Testing"
   },
   {
+    "id": 16,
     "title": "Figma Complete Course",
     "subTitle": "Master Figma and create professional interface designs",
     "description": "Learn Figma from beginner to advanced with components, auto layout, prototyping, and design systems.",
@@ -256,6 +272,7 @@
     "courseCurriculum": "Figma Basics, Components, Auto Layout, Prototyping, Design Systems, App Design Project"
   },
   {
+    "id": 17,
     "title": "Artificial Intelligence Fundamentals",
     "subTitle": "Understand AI concepts and build your first intelligent applications",
     "description": "Learn machine learning fundamentals, neural networks, AI APIs, and practical artificial intelligence projects.",
@@ -272,6 +289,7 @@
     "courseCurriculum": "AI Fundamentals, Machine Learning, Neural Networks, AI APIs, Model Training, AI Project"
   },
   {
+    "id": 18,
     "title": "Machine Learning with Python",
     "subTitle": "Build practical machine learning models with Python",
     "description": "Learn supervised and unsupervised learning, feature engineering, model evaluation, and deployment.",
@@ -288,6 +306,7 @@
     "courseCurriculum": "Python for ML, Regression, Classification, Clustering, Feature Engineering, Model Deployment"
   },
   {
+    "id": 19,
     "title": "Flutter Mobile Development",
     "subTitle": "Build beautiful cross-platform mobile applications with Flutter",
     "description": "Learn Flutter and Dart by creating production-ready Android and iOS applications.",
@@ -304,6 +323,7 @@
     "courseCurriculum": "Dart Basics, Flutter Widgets, Layouts, State Management, APIs, Firebase, Mobile App Project"
   },
   {
+    "id": 20,
     "title": "Free Web Development Bootcamp",
     "subTitle": "Start your web development journey for free",
     "description": "Learn the fundamentals of HTML, CSS, and JavaScript while building your first website.",

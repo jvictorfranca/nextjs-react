@@ -22,7 +22,8 @@ if (count === 0) {
     for (const user of users) {
         const hashed = bcrypt.hashSync(user.password, 10)
         insert.run(
-            user.name, user.email, hashed, user.email_verified, user.token, user.is_admin
+            
+            user.id, user.name, user.email, hashed, user.email_verified, user.token, user.is_admin
         )
     }
 })

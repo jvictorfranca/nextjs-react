@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Alice",
     "email": "alice@example.com",
     "password": "N3xt@app!2025",
@@ -8,6 +9,7 @@
     "is_admin": 1
   },
   {
+    "id": 2,
     "name": "Bob",
     "email": "bob@example.com",
     "password": "S3cur3#Talks_99",
@@ -16,6 +18,7 @@
     "is_admin": 0
   },
   {
+    "id": 3,
     "name": "Charlie",
     "email": "charlie@example.com",
     "password": "PassWave_47!",

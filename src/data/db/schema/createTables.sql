@@ -13,9 +13,12 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
+    course_id INTEGER NOT NULL,
     text TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    edited_at DATETIME,
     FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
 CREATE TABLE IF NOT EXISTS courses (

@@ -1,4 +1,5 @@
 INSERT OR IGNORE INTO users (
+    id,
     name,
     email,
     password,
@@ -6,4 +7,4 @@ INSERT OR IGNORE INTO users (
     verification_token,
     is_admin
 )
-VALUES (?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?);

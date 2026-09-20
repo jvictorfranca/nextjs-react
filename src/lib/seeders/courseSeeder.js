@@ -21,6 +21,7 @@ export default function seedCourses(db) {
         const insertMany = db.transaction((courses) => {
             for (const course of courses) {
                 insert.run(
+                    course.id,
                     course.title,
                     course.subTitle,
                     course.description,

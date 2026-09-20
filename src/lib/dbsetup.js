@@ -17,7 +17,7 @@ const createTableSql = loadSQL("schema/createTables.sql")
 db.exec(createTableSql);
 
 seedUsers(db)
-seedMessages(db)
 seedCourses(db)
+seedMessages(db)
 
 export default db;
