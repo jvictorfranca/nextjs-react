@@ -9,6 +9,8 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import z from "zod"
+import { getCourses } from "./action"
+import CourseCard from "../courses/CourseCard"
 
 const messageSchema = z.object({
     text: z.string().min(1, {message: "Message cannot be empty"}).max(500, {message: "Message is too long. Maximum 500 chars"})
@@ -21,6 +23,38 @@ export default function Messages() {
     // Check user session:
 
     const {status} = useSession()
+
+    const [selectedCourse, setSelectedCourse] = useState(0)
+    const [courses, setCourses] = useState([])
+
+    // Fetch courses on mount
+
+    useEffect( () => {
+        console.log("Fetching courses")
+
+        const fetchCourses  = async () => {
+
+            try{
+                const data = await getCourses()
+                setCourses(data)
+    
+                if(data.length > 0) {
+                    if(!selectedCourse || selectedCourse === 0) {
+                        setSelectedCourse(data[0].id)
+                    }
+                }
+    
+            } catch (e) {
+                console.error("Error fetching courses", e)
+            }
+        }
+
+        if(status === "authenticated") {
+            fetchCourses()
+        }
+
+
+    }, [status])
 
 
     // const [messages, setMessages] = useState([])
@@ -116,7 +150,7 @@ export default function Messages() {
     // }, [])
 
     if(status === "loading") {
-        return <p p-6 text-center>Loading session...</p>
+        return <p className="p-6 text-center">Loading session...</p>
     }
 
     if(status === "unauthenticated") {
@@ -129,7 +163,7 @@ export default function Messages() {
     }
 
     return (
-        <div className="p-6 max-w-lg mx-auto">
+        <div className="p-6 mx-auto">
             <h1 className="text-2xl font-bold mb-4">Chat room</h1>
             {/* <ul className="space-y-2 mb-6">
 
@@ -149,6 +183,31 @@ export default function Messages() {
             {/* Wrapper column div */}
             <div className="flex flex-col lg:flex-row gap:6">
                 <div className="lg:w-2/5 xl:w-1/3">
+                    {courses.length > 0 && selectedCourse && (
+                        <div className="lg:sticky lg:top-6">
+                            <CourseCard 
+                                course={courses.find(c=> c.id === selectedCourse)}
+                                showDescription={false}
+                                showViewDetailsButton={false}
+                            />
+
+                        </div>
+                    )}
+
+                    <div className="mt-4">
+                        <label className="block mb-1 font-semibold">Select Course: </label>
+                        <select 
+                            value={selectedCourse}
+                            onChange={(e) => setSelectedCourse(Number(e.target.value))}
+                            className="border px-3 py-2 rounded-md w-full dark:bg-gray-700 dark:text-white"
+                        >
+                            {courses.map((c) => (
+                                <option key={c.id} value={c.id}>{c.title}</option>
+                            ))}
+                        </select>
+
+                    </div>
+                    
 
                 </div>
 

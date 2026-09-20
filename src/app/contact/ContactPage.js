@@ -61,14 +61,14 @@ export default function Contact() {
       <form className="space-y-4"  onSubmit={handleSubmit(onSubmit)}>
         {/* Name input */}
         <input type="text" placeholder="Your name" className={inputClass} {...register('name')}/>
-          <FormError>{errors?.name.message}</FormError>
+          <FormError>{errors?.name?.message}</FormError>
         
         {/* Email input */}
         <input type="email" placeholder="Your email" className={inputClass} {...register('email')}/>
-          <FormError>{errors?.email.message}</FormError>
+          <FormError>{errors?.email?.message}</FormError>
         {/* Message input */}
         <textarea placeholder="Your message" className={inputClass} {...register('message')}/>
-          <FormError>{errors?.message.message}</FormError>
+          <FormError>{errors?.message?.message}</FormError>
 
         <SubmitButton>
           Send
