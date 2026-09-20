@@ -1,8 +1,20 @@
 'use client'
 
+import FormError from "@/components/FormError"
+import SubmitButton from "@/components/SubmitButton"
+import { inputClass } from "@/lib/styles"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import z from "zod"
+
+const messageSchema = z.object({
+    text: z.string().min(1, {message: "Message cannot be empty"}).max(500, {message: "Message is too long. Maximum 500 chars"})
+})
+
+
 
 export default function Messages() {
 
@@ -11,24 +23,19 @@ export default function Messages() {
     const {status} = useSession()
 
 
-    const [messages, setMessages] = useState([])
-    const [newMessage, setNewMessage] = useState("")
-    const [loading, setLoading] = useState(false)
+    // const [messages, setMessages] = useState([])
 
-    const fetchMessages = async () => {
-        try {
+      const {
+        register,
+        handleSubmit,
+        reset,
+        formState: {errors, isSubmitting}
+      }  = useForm({
+        resolver: zodResolver(messageSchema),
+        defaultValues: {text:""}
+      })
 
-            const res = await fetch("/api/messages")
-            const data = await res.json()
-            setMessages(data)
-
-        } catch(e) {
-            console.error("Failed to load messages", e)
-
-        }
-    }
-
-    const handleSubmit = async (e) => {
+      const onSubmit = async (values) => {
         e.preventDefault()
         if(!newMessage.trim()) return
 
@@ -63,33 +70,50 @@ export default function Messages() {
 
     }
 
-// Fetch the messages
-    useEffect(()=> {
-        fetchMessages()
-    }, [])
+
+    // const fetchMessages = async () => {
+    //     try {
+
+    //         const res = await fetch("/api/messages")
+    //         const data = await res.json()
+    //         setMessages(data)
+
+    //     } catch(e) {
+    //         console.error("Failed to load messages", e)
+
+    //     }
+    // }
+
+
+
+
+// // Fetch the messages
+//     useEffect(()=> {
+//         fetchMessages()
+//     }, [])
 
 
     // Create connecton to server-sent events (SSE) endpoint. Browser will keep connection open to receive updates.
 
-    useEffect(()=> {
-        const eventSource = new EventSource("/api/messages/stream")
+    // useEffect(()=> {
+    //     const eventSource = new EventSource("/api/messages/stream")
 
-        eventSource.onmessage = (event) => {
-            const newMessage = JSON.parse(event.data)
+    //     eventSource.onmessage = (event) => {
+    //         const newMessage = JSON.parse(event.data)
 
-            if(newMessage.type === "connected") {
+    //         if(newMessage.type === "connected") {
 
-                toast.success("Connected successfully!")
+    //             toast.success("Connected successfully!")
 
-            } else {
-                setMessages((prev) => [...prev, newMessage])
-            }
-        }
+    //         } else {
+    //             setMessages((prev) => [...prev, newMessage])
+    //         }
+    //     }
 
 
-        // Cleanup
-        return () => {eventSource.close()}
-    }, [])
+    //     // Cleanup
+    //     return () => {eventSource.close()}
+    // }, [])
 
     if(status === "loading") {
         return <p p-6 text-center>Loading session...</p>
@@ -106,8 +130,8 @@ export default function Messages() {
 
     return (
         <div className="p-6 max-w-lg mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Chat</h1>
-            <ul className="space-y-2 mb-6">
+            <h1 className="text-2xl font-bold mb-4">Chat room</h1>
+            {/* <ul className="space-y-2 mb-6">
 
                 {messages.map((message) => (
                     <li
@@ -120,24 +144,30 @@ export default function Messages() {
                     </li>
                 ))}
 
-            </ul>
+            </ul> */}
 
-            <form onSubmit={handleSubmit} className="flex gap-2">
-                <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type new message..."
-                    required
-                    disabled = {loading}
-                    className="border px-3 py-2 flex-grow rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                />
+            {/* Wrapper column div */}
+            <div className="flex flex-col lg:flex-row gap:6">
+                <div className="lg:w-2/5 xl:w-1/3">
 
-                <button type="submit" disabled={loading} className={`px-4 py-2 rounded-md text-white transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-7y00"}`}>
-                    {loading ? "Sending..." : "Send"}
-                </button>
+                </div>
 
-            </form>
+
+                {/* Form div */}
+                <div className="flex-1">
+                    <form onSubmit={handleSubmit} className="flex flex-col mt-4 gap-2">
+                        {/* Message input */}
+                        <input type="text" placeholder="Your message" className={inputClass} {...register('message')} disabled={isSubmitting} required/>
+                            <FormError>{errors?.message?.message}</FormError>
+
+                        {/* Submit button */}
+                        <SubmitButton isLoading={isSubmitting} loadingText="Sending...">
+                            Send
+                        </SubmitButton>
+
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }
