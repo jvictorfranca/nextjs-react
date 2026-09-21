@@ -12,37 +12,62 @@ export default function MessagesList ({courseId}) {
     const [messages, setMessages] = useState([])
     const [loading, setLoading] = useState(false)
     
+    const [offset, setOffset] = useState(0)
+    const [hasMore, setHasMore] = useState(false)
+    const bottomRef = useRef(null)
+    const PAGE_SIZE = 10
     
-    useEffect(()=> {
-        const fetchMessages = async () => {
-            setLoading(true)
-            try {
-                // Using route API. Legacy
-                // const res = await fetch("/api/messages")
-                // const data = await res.json()
-                const data = await getMessages(courseId)
+    const fetchMessages = async (newOffset = 0) => {
+        // // Fetch the messages on the DB
+        setLoading(true)
+        try {
+            // Using route API. Legacy
+            // const res = await fetch("/api/messages")
+            // const data = await res.json()
+            const data = await getMessages(courseId, PAGE_SIZE, newOffset)
 
-                console.log(data)
+            console.log(data)
+
+            if(newOffset === 0) {
 
                 setMessages(data.reverse())
-    
-            } catch(e) {
-                console.error("Failed to load messages", e)
-    
+                bottomRef.current?.scrollIntoView({behaviour: "smooth"})
+            } else {
+                const reversedData = data.reverse()
+                setMessages((prev) => [...reversedData, ...prev])
+
             }
+            setHasMore(data.length === PAGE_SIZE)
+
+        } catch(e) {
+            console.error("Failed to load messages", e)
+
+        } finally {
 
             setLoading(false)
         }
 
+    }
+    
+    useEffect(()=> {
 
-        fetchMessages()
+        setOffset(0)
+
+
+        fetchMessages(offset)
 
     }, [courseId])
+
+
+    const loadMore = () => {
+        const newOffset = offset + PAGE_SIZE
+
+        setOffset(newOffset)
+
+        fetchMessages(newOffset)
+    }
     
     
-    
-    
-    // // Fetch the messages
     
     
         // Create connecton to server-sent events (SSE) endpoint. Browser will keep connection open to receive updates.
@@ -71,7 +96,12 @@ export default function MessagesList ({courseId}) {
 
         return(
             <div>
-                <p>Hello</p>
+                {/* Load previous message button */}
+                {hasMore && (
+                    <button onClick={loadMore} className="mb-2 px-3 py-1 rounded bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hober:bg-gray-600">
+                        Load previous {PAGE_SIZE} messages
+                    </button>
+                )}
                 <ul className="space-y-2 mb-6">
                 
                     {messages.map((message) => (
@@ -86,6 +116,7 @@ export default function MessagesList ({courseId}) {
                     ))}
                 
                 </ul>
+                <div ref={bottomRef}/>
             </div>
         )
 }
