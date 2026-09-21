@@ -5,12 +5,14 @@ import SubmitButton from "@/components/SubmitButton"
 import { inputClass } from "@/lib/styles"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn, useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import z from "zod"
 import { getCourses } from "./action"
 import CourseCard from "../courses/CourseCard"
+import MessagesList from "./MessagesList"
+import { ErrorBoundary } from "next/dist/client/components/error-boundary"
 
 const messageSchema = z.object({
     text: z.string().min(1, {message: "Message cannot be empty"}).max(500, {message: "Message is too long. Maximum 500 chars"})
@@ -56,8 +58,6 @@ export default function Messages() {
 
     }, [status])
 
-
-    // const [messages, setMessages] = useState([])
 
       const {
         register,
@@ -214,6 +214,14 @@ export default function Messages() {
 
                 {/* Form div */}
                 <div className="flex-1">
+                    {/* Message list with error boudnary*/}
+                    <ErrorBoundary>
+                        <Suspense fallback={<p>Loading messages</p>}>
+                            <MessagesList courseId={selectedCourse} />
+                        </Suspense>
+                    </ErrorBoundary>
+
+                    {/* Message form */}
                     <form onSubmit={handleSubmit} className="flex flex-col mt-4 gap-2">
                         {/* Message input */}
                         <input type="text" placeholder="Your message" className={inputClass} {...register('message')} disabled={isSubmitting} required/>
