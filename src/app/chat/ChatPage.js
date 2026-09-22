@@ -29,6 +29,8 @@ export default function Messages() {
     const [selectedCourse, setSelectedCourse] = useState(0)
     const [courses, setCourses] = useState([])
 
+    const inputRef = useRef(null)
+
     // Fetch courses on mount
 
     useEffect( () => {
@@ -79,17 +81,21 @@ export default function Messages() {
             const res = await fetch("/api/messages", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({text: newMessage})
+                body: JSON.stringify({text: values.text, course_id: selectedCourse})
             })
 
             const data = await res.json()
 
-            console.log(data)
 
             if(data.success) {
-                setNewMessage("")
+                reset()
                 await fetchMessages()
+
+                setTimeout(() => {
+                    inputRef.current?.focus()
+                }, 500)
             } else{
+                console.error(data.error || "Failed to send message")
                 alert("failed to save message")
             }
 
@@ -222,9 +228,20 @@ export default function Messages() {
                     </ErrorBoundary>
 
                     {/* Message form */}
-                    <form onSubmit={handleSubmit} className="flex flex-col mt-4 gap-2">
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-4 gap-2">
                         {/* Message input */}
-                        <input type="text" placeholder="Your message" className={inputClass} {...register('message')} disabled={isSubmitting} required/>
+                        <input
+                            type="text"
+                            placeholder="Your message"
+                            className={inputClass}
+                            {...register('message')}
+                            disabled={isSubmitting}
+                            required
+                            ref={(e) => {
+                                register("text").ref(e)
+                                inputRef.current = e
+                            }}
+                        />
                             <FormError>{errors?.message?.message}</FormError>
 
                         {/* Submit button */}

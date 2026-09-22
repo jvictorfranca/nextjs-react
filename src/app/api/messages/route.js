@@ -1,40 +1,59 @@
 import db from "@/lib/dbsetup"
 import { broadcastMessage } from "./stream/route"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../auth/[...nextauth]/route"
 
-export async function GET () {
+// export async function GET () {
 
-    try{
+//     try{
 
-        const messages = db.prepare(`
-            SELECT m.id, m.text, m.created_at, u.name AS user_name
-            FROM messages m
-            LEFT JOIN users u ON m.user_id = u.id
-            ORDER BY m.id ASC;
-            `).all()
+//         const messages = db.prepare(`
+//             SELECT m.id, m.text, m.created_at, u.name AS user_name
+//             FROM messages m
+//             LEFT JOIN users u ON m.user_id = u.id
+//             ORDER BY m.id ASC;
+//             `).all()
         
-        return Response.json(messages)
-    } catch (e) {
+//         return Response.json(messages)
+//     } catch (e) {
 
-        console.error("Error reading messages", e)
+//         console.error("Error reading messages", e)
 
-        return Response.json({error: "Failed to  read messages"}, {status: 500})
+//         return Response.json({error: "Failed to  read messages"}, {status: 500})
 
-    }
-}
+//     }
+// }
 
 export async function POST (request) {
 
     try{
-        const {text} = await request.json()
 
-        const userIds = db.prepare("SELECT id FROM users").all().map(u => u.id)
-        const randomUser = userIds[Math.floor(Math.random()*userIds.length)]
+        const session = await getServerSession(authOptions)
+
+        if(!session?.user) {
+            return Response.json(
+                {error: "Unauthorized: Sign in to post a message"}, {status: 401}
+            )
+        }
         
-        const stmt = db.prepare("INSERT INTO messages (user_id, text) VALUES (?, ?)")
-        const result = stmt.run(randomUser, text)
+        const {text, course_id} = await request.json()
 
-        const messageWithId = db.prepare(`
-                SELECT m.id, m.text, m.created_at, u.name AS user_name
+        if(!text?.trim()) {
+            return Response.json(
+                {error: "Message text is required"}, {status: 400}
+            )
+        }
+
+        if(!course_id) {
+        return Response.json(
+            {error: "Course Id is required"}, {status: 400}
+        )}
+        
+        const stmt = db.prepare("INSERT INTO messages (user_id, course_id, text) VALUES (?, ?, ?)")
+        const result = stmt.run(session.user.id, course_id , text)
+
+        const newMessage = db.prepare(`
+                SELECT m.id, m.text, m.created_at, m.user_id, u.name AS user_name, m.course_id
                 FROM messages m
                 LEFT JOIN users u ON m.user_id = u.id
                 WHERE m.id = ?;
@@ -46,10 +65,13 @@ export async function POST (request) {
         return Response.json({
             success: true,
             message: "Message saved with success!",
-            data: messageWithId
+            data: newMessage
         })
 
     } catch(e) {
         console.error("Error saving message", e)
+        return Response.json(
+            {error: "Failed to save message"}, {status: 500}
+        )
     }
 }
