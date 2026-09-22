@@ -5,9 +5,8 @@ import SubmitButton from "@/components/SubmitButton"
 import { inputClass } from "@/lib/styles"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn, useSession } from "next-auth/react"
-import { useEffect, useState, Suspense } from "react"
+import { useEffect, useState, Suspense, useRef } from "react"
 import { useForm } from "react-hook-form"
-import toast from "react-hot-toast"
 import z from "zod"
 import { getCourses } from "./action"
 import CourseCard from "../courses/CourseCard"
@@ -72,10 +71,6 @@ export default function Messages() {
       })
 
       const onSubmit = async (values) => {
-        e.preventDefault()
-        if(!newMessage.trim()) return
-
-        setLoading(true)
 
         try{
             const res = await fetch("/api/messages", {
@@ -89,7 +84,6 @@ export default function Messages() {
 
             if(data.success) {
                 reset()
-                await fetchMessages()
 
                 setTimeout(() => {
                     inputRef.current?.focus()
@@ -103,57 +97,9 @@ export default function Messages() {
 
             console.error("Error to submit message", e)
 
-        } finally {
-
-            setLoading(false)
         }
 
     }
-
-
-    // const fetchMessages = async () => {
-    //     try {
-
-    //         const res = await fetch("/api/messages")
-    //         const data = await res.json()
-    //         setMessages(data)
-
-    //     } catch(e) {
-    //         console.error("Failed to load messages", e)
-
-    //     }
-    // }
-
-
-
-
-// // Fetch the messages
-//     useEffect(()=> {
-//         fetchMessages()
-//     }, [])
-
-
-    // Create connecton to server-sent events (SSE) endpoint. Browser will keep connection open to receive updates.
-
-    // useEffect(()=> {
-    //     const eventSource = new EventSource("/api/messages/stream")
-
-    //     eventSource.onmessage = (event) => {
-    //         const newMessage = JSON.parse(event.data)
-
-    //         if(newMessage.type === "connected") {
-
-    //             toast.success("Connected successfully!")
-
-    //         } else {
-    //             setMessages((prev) => [...prev, newMessage])
-    //         }
-    //     }
-
-
-    //     // Cleanup
-    //     return () => {eventSource.close()}
-    // }, [])
 
     if(status === "loading") {
         return <p className="p-6 text-center">Loading session...</p>
@@ -171,20 +117,6 @@ export default function Messages() {
     return (
         <div className="p-6 mx-auto">
             <h1 className="text-2xl font-bold mb-4">Chat room</h1>
-            {/* <ul className="space-y-2 mb-6">
-
-                {messages.map((message) => (
-                    <li
-                    key={message.id}
-                    className="p-3 border rounded-md bg-gray-100 dark:bg-gray-800"
-                    >
-                        <p className="font-semibold"> {message.user_name  || "Anonymous"}</p>
-                        <p>{message.text}</p>
-                        <span className="text-xs text-gray-500"> {message.created_at}</span>
-                    </li>
-                ))}
-
-            </ul> */}
 
             {/* Wrapper column div */}
             <div className="flex flex-col lg:flex-row gap:6">
@@ -234,7 +166,7 @@ export default function Messages() {
                             type="text"
                             placeholder="Your message"
                             className={inputClass}
-                            {...register('message')}
+                            {...register('text')}
                             disabled={isSubmitting}
                             required
                             ref={(e) => {

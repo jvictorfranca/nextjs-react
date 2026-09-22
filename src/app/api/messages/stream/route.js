@@ -35,8 +35,14 @@ function encode(str) {
     return new TextEncoder().encode(str)
 }
 
-export function broadcastMessage(message) {
-    const data = `data: ${JSON.stringify(message)}\n\n`
+export function broadcastMessage(payload) {
+
+    if(!payload?.type) {
+        console.error(" broadcastMessage called without type: ", payload)
+        return
+    }
+
+    const data = `data: ${JSON.stringify(payload)}\n\n`
     const encoded = encode(data)
 
     for (const client of clients) {

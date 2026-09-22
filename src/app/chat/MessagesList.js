@@ -3,12 +3,16 @@
 import { useEffect, useRef, useState } from "react"
 import { getMessages } from "./action"
 import { formatDistanceToNow } from "date-fns"
+import { useSession } from "next-auth/react"
+import toast from "react-hot-toast"
 
 
 
 
 export default function MessagesList ({courseId}) {
     
+    const {data:session, status:sessionStatus} = useSession()
+
     const [messages, setMessages] = useState([])
     const [loading, setLoading] = useState(false)
     
@@ -48,6 +52,43 @@ export default function MessagesList ({courseId}) {
         }
 
     }
+
+    useEffect(()=> {
+        if(sessionStatus !== "authenticated") {
+            return
+        }
+
+        // Create connecton to server-sent events (SSE) endpoint. Browser will keep connection open to receive updates.
+
+        const eventSource = new EventSource("/api/messages/stream")
+    
+            eventSource.onmessage = (event) => {
+  
+                const payload = JSON.parse(event.data)
+
+                switch (payload.type) {
+                    case "connected": 
+                        console.log("connected")
+                        toast.success("Connected successfully!")
+                        break
+
+                    case "new":
+                        console.log("new")
+                        const newMessage = payload.data
+                        setMessages((prev)=>[...prev, newMessage])
+                        break
+
+                    default:
+                        console.warn("Unknown SSE message type: ", payload)
+                        break
+                }
+            }
+    
+    
+            // Cleanup
+            return () => {eventSource.close()}
+
+    },[sessionStatus])
     
     useEffect(()=> {
 
@@ -70,27 +111,7 @@ export default function MessagesList ({courseId}) {
     
     
     
-        // Create connecton to server-sent events (SSE) endpoint. Browser will keep connection open to receive updates.
-    
-        // useEffect(()=> {
-        //     const eventSource = new EventSource("/api/messages/stream")
-    
-        //     eventSource.onmessage = (event) => {
-        //         const newMessage = JSON.parse(event.data)
-    
-        //         if(newMessage.type === "connected") {
-    
-        //             toast.success("Connected successfully!")
-    
-        //         } else {
-        //             setMessages((prev) => [...prev, newMessage])
-        //         }
-        //     }
-    
-    
-        //     // Cleanup
-        //     return () => {eventSource.close()}
-        // }, [])
+
 
         if(loading) return <p>Loading messages...</p>
 

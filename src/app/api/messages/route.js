@@ -27,17 +27,13 @@ import { authOptions } from "../auth/[...nextauth]/route"
 export async function POST (request) {
 
     try{
-
         const session = await getServerSession(authOptions)
-
         if(!session?.user) {
             return Response.json(
                 {error: "Unauthorized: Sign in to post a message"}, {status: 401}
             )
         }
-        
         const {text, course_id} = await request.json()
-
         if(!text?.trim()) {
             return Response.json(
                 {error: "Message text is required"}, {status: 400}
@@ -48,6 +44,7 @@ export async function POST (request) {
         return Response.json(
             {error: "Course Id is required"}, {status: 400}
         )}
+
         
         const stmt = db.prepare("INSERT INTO messages (user_id, course_id, text) VALUES (?, ?, ?)")
         const result = stmt.run(session.user.id, course_id , text)
@@ -60,7 +57,7 @@ export async function POST (request) {
             `).get(result.lastInsertRowid)
 
         // Broadcast new message
-        broadcastMessage(messageWithId)
+        broadcastMessage({type: "new", data: newMessage})
 
         return Response.json({
             success: true,
