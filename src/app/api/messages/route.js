@@ -72,3 +72,41 @@ export async function POST (request) {
         )
     }
 }
+
+
+// Delete handler to remove a message by its author
+export async function DELETE(request) {
+    try {
+
+        const session = await getServerSession(authOptions)
+
+        if(!session?.user) {
+            return Response.json({Error: "Unauthorized"}, {status:401})
+        }
+
+        const {id}= await request.json()
+
+        if(!id) {
+            return Response.json({Error: "Message Id required"}, {status:400})
+        }
+
+        const message = db.prepare("SELECT * FROM messages WHERE id = ?").get(id)
+
+        if(!message || message.user_id !== session.user.id) {
+            return Response.json({Error: "Unauthorize"}, {status:403})
+        }
+
+        db.prepare("DELETE FROM messages WHERE id = ?").run(id)
+
+        broadcastMessage({
+            type: "delete",
+            data: {id}
+        })
+
+        return Response.json({success: true, message: "Message deleted successfully!"})
+
+    } catch (e) {
+        console.error("Error deleting message: ", e)
+        return Response.json({Error: "Failed to delete message"}, {status:500})
+    }
+}

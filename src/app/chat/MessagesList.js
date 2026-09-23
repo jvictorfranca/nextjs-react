@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react"
 import { getMessages } from "./action"
-import { formatDistanceToNow } from "date-fns"
 import { useSession } from "next-auth/react"
 import toast from "react-hot-toast"
+import MessageItem from "./MessageItem"
 
 
 
@@ -77,6 +77,11 @@ export default function MessagesList ({courseId}) {
                         const newMessage = payload.data
                         setMessages((prev)=>[...prev, newMessage])
                         break
+                    
+                    case "delete":
+                        const messageId = payload.data.id
+                        setMessages((prev) => prev.filter((msg) => msg.id !== messageId))
+                        break
 
                     default:
                         console.warn("Unknown SSE message type: ", payload)
@@ -107,12 +112,30 @@ export default function MessagesList ({courseId}) {
 
         fetchMessages(newOffset)
     }
-    
-    
-    
-    
 
+    const handleDelete = async (id) => {
+        try{
+            setMessages((prev) => prev.filter((m)=> m.id !== id))
 
+            const res = await fetch("/api/messages", {
+                method: "DELETE",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({id})
+            })
+
+            const data = await res.json()
+
+            if(!res.ok) throw new Error(data.error || "Failed to delete message")
+
+            toast.success("Message deleted")
+
+        } catch (e) {
+            console.error(e)
+            toast.error(e.message || "Failed to delete")
+        }
+    }
+      
+    
         if(loading) return <p>Loading messages...</p>
 
         return(
@@ -126,14 +149,7 @@ export default function MessagesList ({courseId}) {
                 <ul className="space-y-2 mb-6">
                 
                     {messages.map((message) => (
-                        <li
-                        key={message.id}
-                        className="p-3 border rounded-md bg-gray-100 dark:bg-gray-800"
-                        >
-                            <p className="font-semibold"> {message.user_name  || "Anonymous"}</p>
-                            <p>{message.text}</p>
-                            <span className="text-xs text-gray-500"> {formatDistanceToNow(new Date(message.created_at + "Z"), {addSuffix: true})}</span>
-                        </li>
+                        <MessageItem key={message.id} message={message} session={session} handleDelete={handleDelete} />
                     ))}
                 
                 </ul>
