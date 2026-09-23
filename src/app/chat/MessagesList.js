@@ -82,6 +82,11 @@ export default function MessagesList ({courseId}) {
                         const messageId = payload.data.id
                         setMessages((prev) => prev.filter((msg) => msg.id !== messageId))
                         break
+                    
+                    case "edit":
+                        const updatedMessage = payload.data
+                        setMessages((prev) => prev.map((msg) => msg.id === updatedMessage.id ? {...msg, ...updatedMessage} : msg))
+                        break
 
                     default:
                         console.warn("Unknown SSE message type: ", payload)
@@ -134,6 +139,33 @@ export default function MessagesList ({courseId}) {
             toast.error(e.message || "Failed to delete")
         }
     }
+
+    const handleEdit = async (id, editText) => {
+        if(!editText.trim) return
+
+        try{
+
+            setMessages(prev => prev.map((m) => (m.id === id ? {...m, text: editText} : m)))
+
+            const res = await fetch ("/api/messages", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({id, newText: editText})
+            })
+
+            const data = await res.json()
+
+            if (!res.ok) throw new Error(data.error || "Failed to update message")
+
+            toast.success("Message updated")
+
+
+
+        } catch (e) {
+            console.error(e)
+            toast.error(e.message || "Failed to edit message")
+        }
+    }
       
     
         if(loading) return <p>Loading messages...</p>
@@ -149,7 +181,7 @@ export default function MessagesList ({courseId}) {
                 <ul className="space-y-2 mb-6">
                 
                     {messages.map((message) => (
-                        <MessageItem key={message.id} message={message} session={session} handleDelete={handleDelete} />
+                        <MessageItem key={message.id} message={message} session={session} handleDelete={handleDelete} handleEdit={handleEdit}/>
                     ))}
                 
                 </ul>

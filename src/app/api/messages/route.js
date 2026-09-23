@@ -110,3 +110,52 @@ export async function DELETE(request) {
         return Response.json({Error: "Failed to delete message"}, {status:500})
     }
 }
+
+export async function PUT(request) {
+    try {
+
+        const session = await getServerSession(authOptions)
+
+        if(!session?.user) {
+            return Response.json({error: "Unauthorized"}, {status: 401})
+
+        }
+        const {id, newText} = await request.json()
+
+        if(!id || !newText?.trim()) {
+            return Response.json({error: "Invalid data"}, {status: 400})
+        }
+
+        const message = db.prepare("SELECT * FROM messages WHERE id = ?").get(id)
+
+        if(!message || message.user_id !== session.user.id) {
+            return Response.json({Error: "Unauthorize"}, {status:403})
+        }
+
+        db.prepare("UPDATE messages SET text = ?, edited_at = CURRENT_TIMESTAMP WHERE id = ?").run(newText, id)
+
+       const updated = await db
+            .prepare(`
+                SELECT m.id, m.text, m.created_at, m.edited_at, m.user_id, u.name AS user_name, m.course_id
+                FROM messages m
+                LEFT JOIN users u ON m.user_id = u.id
+                WHERE m.id = ?
+            `)
+            .get(id)
+
+
+        broadcastMessage({
+            type: "edit",
+            data: updated
+        })       
+
+        return Response.json({success: true, message: "Message updated successfully", data: updated})
+
+
+
+    } catch (e) {
+        console.error("Error editing message: ", error)
+
+        return Response.json({error: "Failed to edit message"}, {status:500})
+    }
+}

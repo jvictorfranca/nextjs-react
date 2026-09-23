@@ -1,9 +1,10 @@
 "use client"
 
+import clsx from "clsx"
 import { formatDistanceToNow } from "date-fns"
 import { useState } from "react"
 
-export default function MessageItem ({message, session, handleDelete}) {
+export default function MessageItem ({message, session, handleDelete, handleEdit}) {
 
 const [isEditing, setIsEditing] = useState(false)
 const [editText, setEditText] = useState(message.text)
@@ -18,11 +19,47 @@ const canEditOrDelete = session?.user?.id === message?.user_id
 
                 {/* Message contentent or editing input */}
 
-                {isEditing && (
+                {isEditing ? (
+                    <form className="flex gap-2 items-center mt-1"
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            handleEdit(message.id, editText)
+                            setIsEditing(false)
+                        }}
+                    >
+                        <input
+                            type="text"
+                            value={editText}
+                            onChange={(e) => setEditText(e.target.value)}
+                            className = {clsx(
+                                "border rounded-md px-2 py-1 flex-grow",
+                                "bg-white text-gray-900",
+                                "dark:bg-gray-700 dark:text-gray-100"
+                            )}
+                        />
+
+                        <button
+                            type="submit"
+                            className="text-sm text-green-600 hover:underline"
+                        >
+                            Save
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => {setIsEditing(false)}}
+                            className="text-sm text-gray-500 hover:underline"
+                        >
+                            Cancel
+                        </button>
+                    </form>
+                ) : (
                     <div>
-                        Editing
+                    <p>{message.text}</p>
                     </div>
-                )}
+                )
+            
+            }
 
                 {/* Edit and delete buttons */}
                 {
@@ -44,9 +81,6 @@ const canEditOrDelete = session?.user?.id === message?.user_id
                             </button>
                         </div>
                     )}
-                        <div>
-                            <p>{message.text}</p>
-                        </div>
 
                 {/* Message footer */}
 
