@@ -18,15 +18,33 @@ export async function proxy(request) {
 
     const isProtected = protectedPaths.some((path) => pathname.startsWith(path))
     const isAdminRoute = adminPaths.some((path) => pathname.startsWith(path))
-
+    const loginUrl = new URL("/login", request.url)
+    
     if (isProtected && !token) {
         console.log("Unauthenticated access to protected route: ", pathname)
 
-        const loginUrl = new URL("/login", request.url)
         loginUrl.searchParams.set("callbackUrl", request.url)
 
         return NextResponse.redirect(loginUrl)
     }
+
+    if (isAdminRoute) {
+        if (!token) {
+            console.log("Unauthenticated access to admin route:", pathname)
+
+            loginUrl.searchParams.set("callbackUrl", request.url)
+            return NextResponse.redirect(loginUrl)
+        }
+
+        if(token.is_admin !== 1) {
+            console.log("Unauthorized access - not an admin", token?.email)
+            const unauthorizedUrl = new URL("/", request.url)
+
+            unauthorizedUrl.searchParams.set("error", "unauthorized")
+            return NextResponse.redirect(unauthorizedUrl)
+        }
+    }
+
     return NextResponse.next()
 
 }
